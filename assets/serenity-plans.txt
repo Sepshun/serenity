@@ -1,0 +1,48 @@
+Database Columns ------------------------
+ - ID will be used to display an entries ID, this is good for finding or editing an entry
+ - Display is used to display whether an entry is still actively promoting music
+ - Name is obviously the name of the entry (i.e. PhaseBeats)
+ - Sub is to show the submission of an entry. PHP will take care of submission type so links, email addresses, or "sc" all work well
+ - Genres will be edited in the normal edit menu for a promoter, you'll be presented with multiple checkboxes
+ - Facebook
+ - Soundcloud
+ - Youtube
+ - Instagram
+ - Twitter
+ - Webpage
+ - Flags will allow the tool to analyze each entry and flag something wrong with it, more below
+
+
+Flagging system ------------------------
+The flagging system will use JavaScript to check all promoters, one after another, and then report if anything looks out of place, such as a facebook link in the soundcloud field, the promoter not uploading in the past 2-3 months, etc etc
+Once the system has checked a promoter and finds a reason for flagging, it will then format a log such as:
+
+user|This entry was submitted by a user, it must be checked over by a moderator or admin before becoming visible on the promo list.
+social|A social link in this entry has been suspected of being in the wrong place
+
+This is split by two values, a type and a string. The type is "user" or "social", etc. This defines how you can filter flags. So to check all user submitted entries you would click "Flags" in the toolbar and select "User" under the types
+This log will be added to the database under the "flag" column
+If multiple flags are present, an and symbol (&) will be used to seperate them
+Standard users will NOT have access to the flagging system
+
+FLAG TYPES:
+social   - This means that an entry has a problem with it's social links
+activity - This flag types states that the channel may no longer be active
+pending  - This means a user has submitted this entry and it is awaiting approval
+delete   - This means an entry has been marked for removal, this must be viewed by an admin for approval
+edit     - This means a user has requested an edit to an entry. They will be able to provide their reason in a text-input
+
+
+
+User Account Types ------------------------
+Administrator --
+Administrators have the permission to do anything they please, only one will exist that will be myself.
+This includes adding active entries immediately without approval, creating backups of the database, approving user submitted entries, editing entries, deleting entries, scan the entire database, as well as much more.
+
+Moderator --
+A moderator has most of abilities an administrator would have, minus a few things. A moderator would not be handling the deletion of database backups though they can make a backup (limited to one per day), moderators may add and edit entries, but may not delete an entry.
+
+User --
+A user is very limited, as they may only add an entry that must be approved. They may also request an edit or deletion, this will be a separate flag type however.
+
+Accounts will also have to have the ability to be flagged, in case of spamming or things of the sort

@@ -1,0 +1,894 @@
+// -------------------------------------------
+// FONTS
+@import url('https://fonts.googleapis.com/css?family=Open+Sans|Open+Sans+Condensed:300');
+
+// -------------------------------------------
+// VARIABLES
+$font-main: "Open Sans";
+$font-cond: "Open Sans Condensed";
+
+$col-1: #005189;
+$col-2: #25BB8F;
+$col-3: #BCD867;
+
+$dark-1: #1E1E1E;
+$dark-2: #282828;
+
+$facebook  : #3b5998;
+$soundcloud: #ff3a00;
+$youtube   : #bb0000;
+$twitter   : #55acee;
+$instagram : #bc2a8d;
+$webpage   : #5386CC;
+
+$error  : #FF5D5D;
+$success: #35FF35;
+
+$pr-active  : #00FF7B;
+$pr-inactive: #FF5D5D;
+$sub-web    : #00CCFF;
+$sub-sc     : $soundcloud;
+$sub-email  : #F5FF88;
+
+
+// -------------------------------------------
+// MATERIAL SHADOW MIXIN
+@mixin shadow($elevation) {
+	// | IF                | KEY SHADOW | UMBRA                            | KEY SHADOW | PENUMBRA            | AMBIENT SHADOW               |
+	@if ($elevation == 1)  { box-shadow: 0 0 2px 0 rgba(0,0,0,0.14),       0 2px 2px 0 rgba(0,0,0,0.12),    0 1px 3px 0 rgba(0,0,0,0.2);   }
+	@if ($elevation == 2)  { box-shadow: 0 0 4px 0 rgba(0,0,0,0.14),       0 3px 4px 0 rgba(0,0,0,0.12),    0 1px 5px 0 rgba(0,0,0,0.2);   }
+	@if ($elevation == 3)  { box-shadow: 0 0 4px 0 rgba(0,0,0,0.14),       0 3px 4px 0 rgba(0,0,0,0.12),    0 1px 5px 0 rgba(0,0,0,0.2);   }
+	@if ($elevation == 4)  { box-shadow: 0 2px 4px 0 rgba(0,0,0,0.14),     0 4px 5px 0 rgba(0,0,0,0.12),    0 1px 10px 0 rgba(0,0,0,0.2);  }
+	@if ($elevation == 6)  { box-shadow: 0 6px 10px 0 rgba(0,0,0,0.14),    0 1px 18px 0 rgba(0,0,0,0.12),   0 3px 5px 0 rgba(0,0,0,0.2);   }
+	@if ($elevation == 8)  { box-shadow: 0 8px 10px 1px rgba(0,0,0,0.14),  0 3px 14px 3px rgba(0,0,0,0.12), 0 4px 15px 0 rgba(0,0,0,0.2);  }
+	@if ($elevation == 9)  { box-shadow: 0 9px 12px 1px rgba(0,0,0,0.14),  0 3px 16px 2px rgba(0,0,0,0.12), 0 5px 6px 0 rgba(0,0,0,0.2);   }
+	@if ($elevation == 12) { box-shadow: 0 12px 17px 2px rgba(0,0,0,0.14), 0 5px 22px 4px rgba(0,0,0,0.12), 0 7px 8px 0 rgba(0,0,0,0.2);   }
+	@if ($elevation == 16) { box-shadow: 0 16px 24px 2px rgba(0,0,0,0.14), 0 6px 30px 5px rgba(0,0,0,0.12), 0 8px 10px 0 rgba(0,0,0,0.2);  }
+	@if ($elevation == 24) { box-shadow: 0 24px 38px 3px rgba(0,0,0,0.14), 0 9px 46px 8px rgba(0,0,0,0.12), 0 11px 15px 0 rgba(0,0,0,0.2); }
+}
+
+// -------------------------------------------
+// LONG SHADOW
+// Function
+@function makeLongShadow($color, $length) {
+	$val: 0px 0px $color;
+	@for $i from 1 through $length {$val: #{$val}, #{$i}px #{$i}px #{$color};}
+	@return $val;
+}
+// Mixin
+@mixin longShadow($type, $color, $length) {
+	@if ($type == 'text') {text-shadow: makeLongShadow($color, $length);}
+	@if ($type == 'box')  {box-shadow:  makeLongShadow($color, $length);}
+}
+
+// -------------------------------------------
+// ANIMATIONS
+@keyframes list {
+	0%   {transform: translateY(-50px); opacity: 0;}
+	100% {transform: translateY(0px);   opacity: 1;}
+}
+
+
+
+// -------------------------------------------
+// DEFAULT
+* {font-family: $font-main; margin: 0;}
+input {transition: all 0.15s ease-in-out;}
+input:focus {outline: none; background: hsl(0,0%,10%) !important;}
+button:focus {outline: none;}
+
+
+// -------------------------------------------
+// ELEMENTS
+
+// -------------------------------------------
+// User form container
+.user-form-container {
+	position: relative;
+	width: 100vw;
+	height: 100vh;
+	overflow: hidden;
+	background-color: hsl(0,0%,10%);
+	#serenity-name {
+		position: absolute;
+		padding: 10px;
+		z-index: 1;
+		color: white;
+	}
+	img {
+		position: absolute;
+		transform: rotate(-45deg);
+		top: -400px;
+		left: -600px;
+		@include shadow(2);
+	}
+}
+// -------------------------------------------
+// USER-FORM
+.user-form {
+	background-color: hsl(0,0%,15%);
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%,-50%);
+	overflow: hidden;
+	@include shadow(4);
+	p.title {
+		color: white;
+		padding: 20px 10px;
+		background: linear-gradient(0deg, $col-2, $col-1);
+		&:after {
+			content: "";
+			width: 96px;
+			height: 96px;
+			position: absolute;
+			right: -54px;
+			top: 14px;
+			background-color: #262626;
+			transform: rotate(45deg);
+			padding: 0;
+			z-index: 0;
+		}
+	}
+	// -------------------------------------------
+	// FORM
+	form {
+		padding: 10px;
+		// -------------------------------------------
+		// INPUT BOX
+		.input-box {
+			margin: 10px 0 10px 0;
+			position: relative;
+			overflow: hidden;
+			&:after {
+				content: "";
+				position: absolute;
+				background-color: #262626;
+				width: 64px;
+				height: 38px;
+				transform: skew(45deg);
+				top: 0;
+				right: -30px;
+				z-index: 1;
+				transition: all 0.15s ease-in-out;
+			}
+			&:nth-child(even):after {transform: skew(-45deg);}
+			input {
+				width: 320px;
+				position: relative;
+				padding: 10px;
+				background-color: hsl(0,0%,20%);
+				border: none;
+				color: white;
+				margin: 0 !important;
+				z-index: 1;
+				transition: all 0.15s ease-in-out;
+				&:focus {outline: none;}
+			}
+			&:last-of-type {margin: 10px 0 20px 0;}
+			// -------------------------------------------
+			// FLAWED INPUT
+			&.error {
+				input   {box-shadow: 0 0 0 1px $error inset;}
+				&:after {border-left: $error 1px solid;}
+			}
+			// -------------------------------------------
+			// SUCCESSFUL INPUT
+			&.success {
+				input   {box-shadow: 0 0 0 1px $success inset;}
+				&:after {border-left: $success 1px solid;}
+			}
+		}
+		// -------------------------------------------
+		// FORM SUBMIT BUTTON
+		button {
+			padding: 10px 15px;
+			position: relative;
+			background-color: transparent;
+			border: none;
+			color: white;
+			cursor: pointer;
+			overflow: hidden;
+			&:before {
+				content: "";
+				width: 64px;
+				height: 120%;
+				background-color: white;
+				position: absolute;
+				top: 0;
+				left: -88px;
+				transform: skew(-45deg);
+				transition: all 0.3s ease-in-out;
+			}
+			&:hover:before {left: 80px; opacity: 0;}
+		}
+		// -------------------------------------------
+		// FORM OTHER LINK
+		a {
+			color: white;
+			text-decoration: none;
+			font-size: 0.6em;
+			margin-left: 20px;
+			color: hsl(0,0%,50%);
+		}
+	}
+}
+
+// -------------------------------------------
+// HEADER
+#header {
+	position: fixed;
+	top: 0;
+	width: 100%;
+	background-color: white;
+	box-shadow: 0 -1px 10px rgba(0,0,0,0.3) inset;
+	// -------------------------------------------
+	// Header Title
+	#header-title {
+		padding: 14px 15.5px 17px 15.5px;
+		font-size: 24px;
+		display: inline-block;
+		color: white;
+		z-index: 1;
+		font-weight: lighter;
+	}
+
+	// -------------------------------------------
+	// Header Gradients
+	#header-left-gradient, #header-right-gradient {
+		position: absolute;
+		top: 0;
+		height: 100%;
+		width: 300px;
+		z-index: -1;
+	}
+	#header-left-gradient {
+		left: -32px;
+		transform: skew(-45deg);
+		background: linear-gradient(90deg, $col-1, $col-2);
+	}
+
+
+	// -------------------------------------------
+	// Header Buttons
+	#header-buttons {
+		display: inline-block;
+		margin-left: 192px;
+		div {
+			position: relative;
+			display: inline-block;
+			font-size: 20px;
+			margin: 0px 10px;
+			top: 5px;
+			cursor: pointer;
+			padding: 0px;
+			overflow: hidden;
+			transition: all 0.3s ease-in-out;
+			&:before {
+				content: "";
+				width: 64px;
+				height: 120%;
+				background-color: white;
+				position: absolute;
+				top: 0;
+				left: -96px;
+				transform: skew(-45deg);
+				transition: all 0.3s ease-in-out;
+			}
+			&:hover {
+				color: $col-2;
+				&:before {left: 100%; opacity: 0;}
+			}
+		}
+	}
+
+
+	// -------------------------------------------
+	// Header Account Panel
+	$account-dropdown-speed: 0.3s;
+	#header-account {
+		width: 300px;
+		height: 64px;
+		position: absolute;
+		top: 0;
+		right: 0;
+		cursor: pointer;
+		user-select: none;
+		img.avatar-small {
+			float: left;
+			width: 56px;
+			height: 56px;
+			margin: 4px 8px;
+			border-radius: 50%;
+			@include shadow(2);
+		}
+
+		// -------------------------------------------
+		// Usertype Badge
+		&:before {
+			content: "";
+			position: absolute;
+			top: 8px;
+			left: 50px;
+			width: 10px;
+			height: 10px;
+			border-radius: 50%;
+			border: white 2px solid;
+		}
+		&.admin:before {background-color: red;}
+		&.mod:before   {background-color: #FFAE00;}
+		&.user:before  {background-color: $col-2;}
+
+		// -------------------------------------------
+		// Username
+		#header-username {
+			display: inline-block;
+			p {line-height: 64px; color: white;}
+		}
+		i.material-icons {
+			position: absolute;
+			top: 21px;
+			margin-left: 5px;
+			color: hsla(0,0%,100%,0.5);
+		}
+
+		#account-dropdown {
+			position: absolute;
+			width: 300px;
+			left: 0;
+			top: 64px;
+			background: linear-gradient(90deg, $col-2, #06638A);
+			transform-origin: top;
+			transform: perspective(500px) rotateX(90deg);
+			transition: all $account-dropdown-speed ease-in-out;
+			ul {
+				list-style: none;
+				padding: 0;
+				li {
+					color: white;
+					a {
+						display: inline-block;
+						padding: 10px;
+						color: white;
+						text-decoration: none;
+						width: 100%;
+						&:hover {background-color: hsla(0,0%,100%,0.2);}
+					}
+				}
+			}
+		}
+
+
+		// -------------------------------------------
+		// Header - Account Gradient
+		#header-right-gradient {
+			right: -32px;
+			transform: skew(45deg);
+			width: 300px;
+			background: linear-gradient(90deg, $col-2, $col-1);
+			transition: all $account-dropdown-speed ease-in-out $account-dropdown-speed;
+		}
+
+		// -------------------------------------------
+		// Opened Account Panel
+		&.open {
+			#account-dropdown {
+				transform: perspective(500px) rotateX(0deg);
+				transition: all $account-dropdown-speed ease-in-out $account-dropdown-speed;
+			}
+
+			#header-right-gradient {
+				width: 364px;
+				transition: all $account-dropdown-speed ease-in-out;
+			}
+		}
+	}
+}
+
+
+// -------------------------------------------
+// MODALS
+#black-underlay {
+	height: 100vh;
+	width: 100vw;
+	position: fixed;
+	top: 0;
+	left: 0;
+	background: black;
+	opacity: 0;
+	pointer-events: none;
+	z-index: 1;
+	transition: opacity 0.3s ease-in-out;
+	&.show {opacity: 0.4; pointer-events: auto;}
+}
+.modal {
+	width: 600px;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%,-50%);
+	background-color: $dark-1;
+	box-shadow: 0 5px 10px rgba(0,0,0,0.05);
+	opacity: 0;
+	pointer-events: none;
+	overflow: hidden;
+	z-index: 2;
+	transition: all 0.3s ease-in-out;
+	&.show {opacity: 1; pointer-events: auto;}
+
+	// -------------------------------------------
+	// Nested Elements
+	p {
+		color: white;
+		&.modal-title {
+			text-align: center;
+			font-size: 28px;
+			margin-top: 5px;
+		}
+		&.modal-name {
+			text-align: center;
+			color: hsl(0,0%,47.5%);
+		}
+	}
+	// -------------------------------------------
+	// Close Button
+	.close-btn {
+		color: white;
+		position: absolute;
+		top: 0;
+		right: 0;
+		z-index: 2;
+		cursor: pointer;
+		i {
+			padding: 10px 10px 0 0;
+			position: relative;
+			z-index: 1;
+		}
+		&:after {
+			content: "";
+			width: 128px;
+			height: 128px;
+			position: absolute;
+			top: -72px;
+			transform: rotate(45deg);
+			left: -20px;
+			background: linear-gradient(90deg, $col-1, $col-2);
+			transition: all 0.15s ease-in-out;
+		}
+		&:hover:after {left: -30px;}
+	}
+
+	// -------------------------------------------
+	// Input Panel
+	.input-cont {
+		width: 500px;
+		margin: 20px auto;
+		margin-bottom: 0;
+		// -------------------------------------------
+		// Name/Sub Inputs
+		.pr-input-box {
+			position: relative;
+			clear: right;
+			input[type="text"]:not([name="inactive-info"]) {
+				display: block;
+				width: 480px;
+				margin: 10px 0 0 0;
+				padding: 10px;
+				border: none;
+				background: $dark-2;
+				color: white;
+				box-shadow: 0 0 0 1px transparent inset;
+			}
+			span {
+				position: absolute;
+				top: 0;
+				right: 0;
+				padding: 11px;
+				color: hsl(0,0%,50%);
+				font-size: 12px;
+				cursor: pointer;
+				transition: all 0.15s ease-in-out;
+				&:hover {background-color: hsla(0,0%,100%,0.05);}
+			}
+			label {
+				position: absolute;
+				top: 0;
+				right: 0;
+				padding: 11px;
+				color: hsl(0,0%,50%);
+				font-size: 12px;
+				cursor: pointer;
+				transition: all 0.15s ease-in-out;
+				input {
+					display: none;
+					& + span:after {
+						content: "NOT DISPLAYED";
+						display: inline-block;
+						width: 90.02px;
+					}
+					&:checked + span:after {
+						content: "DISPLAYED";
+						width: auto !important;
+					}
+				}
+			}
+			&.pr-display    input[type="text"]:not([name="inactive-info"]) {box-shadow: 0 0 0 1px $pr-active inset;}
+			&.pr-no-display input[type="text"]:not([name="inactive-info"]) {box-shadow: 0 0 0 1px $pr-inactive inset;}
+			&.sub-web       input[type="text"]:not([name="inactive-info"]) {box-shadow: 0 0 0 1px $sub-web inset;}
+			&.sub-sc        input[type="text"]:not([name="inactive-info"]) {box-shadow: 0 0 0 1px $sub-sc inset;}
+			&.sub-email     input[type="text"]:not([name="inactive-info"]) {box-shadow: 0 0 0 1px $sub-email inset;}
+			.pr-reason {
+				display: block;
+				margin-bottom: 10px;
+				float: right;
+				select {
+					background: $dark-2;
+					color: hsl(0,0%,50%);
+					border: hsl(0,0%,30%) 1px solid;
+					&:focus {
+						outline: none;
+					}
+				}
+				input {
+					background: $dark-2;
+					border: hsl(0,0%,30%) 1px solid;
+					padding: 1px;
+					color: white;
+				}
+			}
+		}
+
+		// -------------------------------------------
+		// Side By Side Inputs
+		.sbs-input {
+			width: 50%;
+			float: left;
+			margin: 10px 0;
+		}
+		.genre-input {
+			//box-shadow: -1px 0 0 hsl(0,0%,30%) inset;
+			ul {
+				width: 50%;
+				margin: 0;
+				padding: 0;
+				float: left;
+				list-style: none;
+				user-select: none;
+				li {
+					padding: 7.5px;
+					margin: 3px 3px 6px 0px;
+					background-color: $dark-2;
+					label {
+						text-transform: capitalize;
+						font-size: 0.9em;
+						color: hsl(0,0%,50%);
+						width: 100%;
+						display: block;
+						cursor: pointer;
+					}
+					input {
+						display: none;
+						& + span {
+							display: block;
+							position: relative;
+							top: -3px;
+							left: -3px;
+							margin-right: 5px;
+							float: left;
+							height: 24px;
+							width: 24px;
+							background-color: $dark-1;
+							transition: all 0.15s ease-in-out;
+							box-shadow: 0 0 0 1px transparent inset;
+							overflow: hidden;
+						}
+						&:checked + span {box-shadow: 0 0 0 1px $col-2 inset;}
+						$check-size: 12px;
+						& + span:before {
+							content: "";
+							position: absolute;
+							width: $check-size;
+							height: $check-size / 2;
+							background-color: transparent;
+							border: 1.5px solid $col-2;
+							border-top: none;
+							border-right: none;
+							transition: all 0.15s ease-in-out;
+							
+							width: $check-size;
+							height: $check-size / 2;
+							top: 6px;
+							left: 5px;
+							opacity: 0;
+							transform: rotate(-45deg);
+						}
+						&:checked + span:before {
+							width: $check-size;
+							height: $check-size / 2;
+							top: 6px;
+							left: 5px;
+							opacity: 1;
+							transform: rotate(-45deg);
+						}
+					}
+				}
+			}
+		}
+		$input-border: 0 0 0 1.2px;
+		.social-input {
+			input {
+				width: calc(100% - 22px);
+				background-color: $dark-2;
+				border: none;
+				padding: 8px;
+				margin: 3px 5px;
+				color: white;
+				box-shadow: $input-border transparent inset;
+				&.active {
+					&[name="facebook"]   {box-shadow: $input-border $facebook inset;}
+					&[name="soundcloud"] {box-shadow: $input-border $soundcloud inset;}
+					&[name="youtube"]    {box-shadow: $input-border $youtube inset;}
+					&[name="instagram"]  {box-shadow: $input-border $instagram inset;}
+					&[name="twitter"]    {box-shadow: $input-border $twitter inset;}
+					&[name="webpage"]    {box-shadow: $input-border $webpage inset;}
+				}
+			}
+		}
+	}
+
+	// -------------------------------------------
+	// Remove confirmation
+	p.para-remove {
+		padding: 10px 0;
+		color: hsl(0,0%,80%);
+	}
+	input[name="remove"] {
+		padding: 10px;
+		background-color: $dark-2;
+		border: none;
+		color: white;
+		width: calc(100% - 20px);
+		margin-bottom: 20px;
+	}
+
+	// -------------------------------------------
+	// Scan radios
+	.scan-radios {
+		label {
+			color: white;
+			width: 50%;
+			display: block;
+			padding: 10px 0;
+			text-align: center;
+			float: left;
+			cursor: pointer;
+			position: relative;
+			input {display: none;}
+			span {
+				position: absolute;
+				width: 100%;
+				height: 100%;
+				top: 0;
+				left: 0;
+				transition: all 0.15s ease-in-out;
+			}
+			input:checked + span {background: rgba(255,255,255,0.05);}
+		}
+	}
+	.scan-display {
+		min-height: 500px;
+		.row {
+			display: flex;
+			float: left;
+			width: 100%;
+			position: relative;
+			.cell {
+				color: white;
+				padding: 10px;
+				width: 100%;
+			}
+			.flags-btn {
+				color: $error;
+				width: 32px;
+				padding: 10px 6.5px;
+				text-align: center;
+				cursor: pointer;
+			}
+			.cell-dropdown {
+				position: absolute;
+				top: 42px;
+				background: hsl(0,0%,8%);
+				width: calc(100% - 20px);
+				color: white;
+				overflow: hidden;
+				max-height: 0px;
+				padding: 0 10px;
+				transition: all 0.15s ease-in-out;
+				z-index: 2;
+				transform: translateZ(0);
+				&.open {
+					max-height: 500px;
+					padding: 10px;
+				}
+			}
+		}
+	}
+
+	// -------------------------------------------
+	// Submit button
+	.submit-btn {
+		clear: both;
+		position: relative;
+		bottom: 0;
+		&:after, &:before {
+			content: "";
+			width: 58px;
+			height: 64px;
+			background-color: $dark-1;
+			position: absolute;
+			left: 120px;
+			bottom: 0;
+			transform: skew(-45deg);
+			z-index: 1;
+		}
+		&:before {left: 322px; transform: skew(45deg);}
+		button {
+			margin: auto;
+			display: block;
+			position: relative;
+			padding: 20px 80px;
+			background: linear-gradient($col-1, $col-2);
+			border: none;
+			color: white;
+			cursor: pointer;
+			overflow: hidden;
+			//@include shadow(4);
+			&:hover {
+				
+			}
+		}
+	}
+}
+
+// -------------------------------------------
+// CONTEXT MENU
+#context-menu {
+	position: absolute;
+	top: 400px;
+	left: 100px;
+	width: 200px;
+	@include shadow(4);
+	z-index: 1;
+	ul {
+		background: $dark-1;
+		list-style: none;
+		padding: 0;
+		li {
+			color: white;
+			padding: 10px;
+			cursor: pointer;
+			&:hover:not(.divider) {background: linear-gradient(90deg, $dark-2, $col-3);}
+			&.divider {
+				padding: 0;
+				height: 2px;
+				width: 90%;
+				margin: 10px auto;
+				border-radius: 50%;
+				background: linear-gradient(90deg, $col-1, $col-2, $col-3);
+			}
+		}
+	}
+}
+
+
+
+// -------------------------------------------
+// MAIN PAGE CONTAINER
+#container {
+	margin: auto;
+	margin-top: 128px;
+	width: 90%;
+
+	// -------------------------------------------
+	// Databae Table
+	table {
+		width: 100%;
+		border-collapse: collapse;
+		tbody {
+			// Table Row
+			tr {
+				// Table Cell
+				td {
+					padding: 10px;
+					position: relative;
+					border-bottom: transparent 0px solid;
+					border-top: transparent 0px solid;
+					transition: all .1s ease-in-out;
+					// Table Dropdown Cell
+					&.table-dropdown-cell {
+						i {
+							position: absolute;
+							right: 8px;
+							border-radius: 5px;
+							box-shadow: 0 0 0 1px transparent;
+							cursor: pointer;
+							transition: all 0.15s ease-in-out;
+							&:hover {
+								border-radius: 50%;
+								box-shadow: 0 0 0 1px black;
+							}
+						}
+						.table-dropdown-content {
+							position: absolute;
+							width: 100%;
+							top: 100%;
+							left: 0;
+							background-color: $dark-2;
+							z-index: 1;
+							opacity: 0;
+							pointer-events: none;
+							transition: all .2s ease-in-out;
+							transform-origin: top;
+							transform: perspective(2000px) rotateX(-90deg);
+							overflow: hidden;
+							@include shadow(4);
+							div {
+								a, p {display: inline-block; padding: 10px;}
+								p {text-transform: capitalize; color: white;}
+								a {
+									color: white;
+									text-decoration: none;
+									cursor: pointer;
+									width: 100%;
+									border-left: transparent 0px solid;
+									transition: all 0.15s ease-in-out;
+									&:hover {
+										background-color: hsla(0,0%,100%,0.1);
+										&.facebook   {border-left: $facebook 5px solid;}
+										&.soundcloud {border-left: $soundcloud 5px solid;}
+										&.youtube    {border-left: $youtube 5px solid;}
+										&.instagram  {border-left: $instagram 5px solid;}
+										&.twitter    {border-left: $twitter 5px solid;}
+										&.webpage    {border-left: $webpage 5px solid;}
+									}
+								}
+							}
+						}
+						&.open {
+							background-color: $dark-1;
+							color: white;
+							cursor: pointer;
+							i {
+								box-shadow: 0 0 0 1px transparent;
+								&:hover {box-shadow: 0 0 0 1px white;}
+							}
+							.table-dropdown-content {
+								opacity: 1;
+								pointer-events: auto;
+								transform: perspective(2000px) rotateX(0deg);
+								div {
+									@for $i from 1 through 10 {
+										&:nth-child(#{$i}):not(:first-child) {
+											animation-name: list;
+											animation-duration: 100ms * $i;
+											animation-timing-function: ease-out;
+											animation-fill-mode: forward;
+										}
+									}
+								}
+							}
+						}
+					}
+					&:nth-child(4), &:nth-child(5) {width: 150px;}
+				}
+				&:nth-child(even) {background-color: hsl(0,0%,90%);}
+				&:hover {box-shadow: 0 0 0 1px hsl(0,0%,80%) inset;}
+				&.selected td {
+					border-bottom: $col-2 2px solid;
+					border-top: $col-1 2px solid;
+					background: linear-gradient(lighten($col-1, 65%), lighten($col-2, 50%));
+				}
+			}
+		}
+	}
+}
