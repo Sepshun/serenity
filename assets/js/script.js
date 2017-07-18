@@ -1,35 +1,51 @@
+
+// Sections I've edited are marked with -=-=- for ease 
+
 $(document).ready(function() {
 	// CONTAINS FUNCTION EXTENSION
 	String.prototype.contains = function(it) { return this.indexOf(it) != -1; };
-	const log = console.log;
 
+	// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+	// New log func | ability to disable logs
+	const log = function(){
+		if(!log.disableLogs) return console.log.apply(null, arguments);
+	};
+
+	// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+	// getInputs functionality
+	const getInputs = function(inputNames, queryType){
+		let inputs = {};
+		inputNames.forEach(function(input){inputs[input] = $("#" + queryType + "-modal input[name='" + input + "']").val()});
+		return inputs;
+	};
+
+	log.disableLogs = false;
 
 	// ------------------------------------
 	// ACCOUNT PANEL | OPENING/CLOSING
-	$('#header-account').click(function() {$(this).toggleClass('open');});
+	$('#header-account').click(function() {
+		$(this).toggleClass('open');
+	});
 
-
-	// ------------------------------------
+	// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 	// CONTEXT MENU
 	// Bind on context menu click
 	var c = "";
 	c.id = 0;
 	$('#container table tbody tr').bind('contextmenu', function(event) {
-		// Get values
+
+		// Define attributes to look for
+		let attributes = ["id", "display", "name", "sub", "genres", "facebook", "soundcloud", "youtube", "instagram", "twitter", "webpage", "flags"];
+
 		c         = $(event.target);
 		c.parent  = c.parent();
-		c.id      = c.parent.attr('id');
-		c.display = c.parent.attr('display');
-		c.name    = c.parent.attr('name');
-		c.sub     = c.parent.attr('sub');
-		c.genres  = c.parent.attr('genres');
-		c.fb      = c.parent.attr('facebook');
-		c.sc      = c.parent.attr('soundcloud');
-		c.yt      = c.parent.attr('youtube');
-		c.ig      = c.parent.attr('instagram');
-		c.tw      = c.parent.attr('twitter');
-		c.wp      = c.parent.attr('webpage');
-		c.flags   = c.parent.attr('flags');
+
+		// Get attributes and set values
+		attributes.forEach(function(attribute){
+			c[attribute] = c.parent.attr(attribute);
+		});
+		// Note: since this is a for loop now, 
+		// "fb, sc, yt, ig" etc are now the full names "facebook, soundcloud ..."
 		
 		// Make sure it's not an anchor tag
 		if (c.prop('nodeName') !== 'A') {
@@ -49,20 +65,26 @@ $(document).ready(function() {
 			});
 		}
 	});
+
 	// Bind on mousedown
 	$(document).bind('mousedown', function(e) {
 		if (!$(e.target).parents('#context-menu').length > 0) {
 			$('#context-menu').hide(100);
 			$('#container table tbody tr').removeClass('selected');
-			//log(e.target);
+			// log(e.target);
 		}
 	});
-	// Click menu option
+
+	// Click menu option -=-=-=-=-=-=-=-
 	$('#context-menu ul li').click(function() {
 		$('#context-menu').hide(100);
 		$('.table-dropdown-cell').removeClass('open');
 		var target = $(this).attr('target');
-		updateModal(target,c.id,c.display,c.name,c.sub,c.genres,c.fb,c.sc,c.yt,c.ig,c.tw,c.wp,c.flags);
+
+		// Changed the list of variables to just "c"
+		updateModal(target, c);
+		// You can then just call variables from 
+		// the c within the updateModal function
 	});
 
 
@@ -128,35 +150,40 @@ $(document).ready(function() {
 		}
 	});
 
-	// ------------------------------------
+	// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 	// SUBMISSION TYPE DETERMINATION
-	var subType;
-	function subDetermine(target, sub) {
-		if (sub.contains('http://') || sub.contains('https://') && !sub.contains('https://soundcloud.com/')) {
-			// WEB
-			target.addClass('sub-web');
-			target.removeClass('sub-email sub-sc');
-			target.find('span').text('WEB');
-			subType = "web";
-		} else if (sub.contains('@')) {
-			// EMAIL
-			target.addClass('sub-email');
-			target.removeClass('sub-web sub-sc');
-			target.find('span').text('EMAIL');
-			subType = "email";
-		} else if (sub.contains('https://soundcloud.com/')) {
-			// SOUNDCLOUD
-			target.addClass('sub-sc');
-			target.removeClass('sub-web sub-email');
-			target.find('span').text('SOUNDCLOUD');
-			subType = "sc";
-		} else {
-			// NONE OF THE ABOVE
-			target.removeClass('sub-web sub-email sub-sc');
-			target.find('span').text('N/A');
-			subType = "";
-		}
+
+	const subContainChecks = {
+		"https://soundcloud.com/": ["soundcloud", "sc"],
+		// soundcloud entry must be first to skip web and the rest.
+		// Also the 2nd item in the array is to add the class since the soundcloud class is .sc
+		"http://": "web",
+		"https://": "web",
+		"@": "email"
 	}
+
+	function subDetermine(target, sub) {
+
+		// Removing all classes first
+		target.removeClass("sub-web sub-email sub-sc");
+
+		for(let key in subContainChecks){
+			let check = typeof subContainChecks[key] === "object" ? subContainChecks[key] : [subContainChecks[key]];
+			if(sub.contains(key)){
+				let name = check[1] || check[0];
+				// class: sub-name
+				target.addClass("sub-" + name);
+				// text: name.toUpperCase()
+				target.find('span').text(check[0].toUpperCase());
+				return;
+			}
+		}
+
+		// None of the above
+		target.find('span').text('N/A');
+
+	}
+
 	$('.pr-input-box input[name="sub"]').keyup(function() {
 		var val = $(this).val();
 		var target = $(this).parent();
@@ -172,6 +199,7 @@ $(document).ready(function() {
 			target.removeClass('active');
 		}
 	}
+
 	$('.social-input input').keyup(function() {
 		var target = $(this);
 		var val = $(this).val();
@@ -179,36 +207,29 @@ $(document).ready(function() {
 		socialCheck(target, val, contains);
 	});
 
-	// ------------------------------------
+	// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 	// SUBMIT BUTTON
+
 	$('.submit-btn:not(.scan-btn)').click(function() {
-		var queryType = $(this).attr('query-type');
+		var queryType = $(this).attr('query-type'), display, name, genres, inputs, flags;
+
+		name = $('#'+queryType+'-modal input[name="pr-name"]').val();
+		inputs = getInputs(["sub", "facebook", "soundcloud", "youtube", "instagram", "twitter", "webpage"], queryType);
+		genres = "";
 
 		// STORE ALL THE INFO
-		var display = '';
 		if (!$('#'+queryType+'-modal input[name="display"]:checked').length > 0) {display = 'false|' + $('#'+queryType+'-modal select').val() + "|" + $('#'+queryType+'-modal input[name="inactive-info"]').val();}
 		else {display = 'true';}
-
-		var name = $('#'+queryType+'-modal input[name="pr-name"]').val();
-		var sub = $('#'+queryType+'-modal input[name="sub"]').val();
-
-		var genres = "";
-		$('#'+queryType+'-modal input[name="genre"]:checked').each(function() {genres += $(this).val() + ",";});
+		$('#'+queryType+'-modal input[name="genre"]:checked').each(function(){ genres += $(this).val() + "," });
 		genres = genres.replace(/,\s*$/, "");
+		flags = "";
 
-		var facebook   = $('#'+queryType+'-modal input[name="facebook"]').val();
-		var soundcloud = $('#'+queryType+'-modal input[name="soundcloud"]').val();
-		var youtube    = $('#'+queryType+'-modal input[name="youtube"]').val();
-		var instagram  = $('#'+queryType+'-modal input[name="instagram"]').val();
-		var twitter    = $('#'+queryType+'-modal input[name="twitter"]').val();
-		var webpage    = $('#'+queryType+'-modal input[name="webpage"]').val();
-
-		var flags = "";
+		// Everything inside the postObj
+		// note: if the key is the same as the variable name, you can just pass 1 argument into an object
+		let postObj = Object.assign({ type:queryType, id:c.id, display, name, genres, flags }, inputs);
 
 		if (queryType === 'remove' && $('#remove-modal input[name="remove"]').val() === 'REMOVE' || queryType !== 'remove') {
-			$.post('query.php', {type:queryType, id:c.id, display:display, name:name, sub:sub, genres:genres, fb:facebook, sc:soundcloud, yt:youtube, ig:instagram, tw:twitter, wp:webpage, flags:flags}, function(res) {
-				location.reload();
-			});
+			$.post('query.php', postObj, function(){location.reload()});
 		}
 	});
 
@@ -219,42 +240,50 @@ $(document).ready(function() {
 	//log(split('flag', "user|submitted by user: Sepshun,display|promoter is inactive"));
 	
 
-	function updateModal(target,id,display,name,sub,genres,fb,sc,yt,ig,tw,wp,flags) {
+	function updateModal(target, c) {
 		if (target === 'edit') {
-			var modal = $('#'+target+'-modal');
+			let modal = $('#'+target+'-modal'),
+			
+			// If you're referencing the same string a lot,
+			// it's always good to keep it at the top/in one spot
+
+			name = {
+				title: "#edit-modal .modal-title",
+				pr: "#edit-modal input[name='pr-name']"
+			},
+
+			display = {
+				input: "#edit-modal input[name='display']",
+				pr: "#edit-modal .pr-input-box:nth-child(1)"
+			};
 
 			// NAME
-			$('#edit-modal .modal-title').text(name);
-			$('#edit-modal input[name="pr-name"]').val(name);
+			$(name.title).text(c.name);
+			$(name.pr).val(c.name);
 			
 			// DISPLAY
-			if (display === 'true') {
-				$('#edit-modal input[name="display"]').prop('checked', true);
-
-				$('#edit-modal .pr-input-box:nth-child(1)').removeClass('pr-no-display');
-				$('#edit-modal .pr-input-box:nth-child(1)').addClass('pr-display');
-				$('#edit-modal .pr-input-box:nth-child(1)').find('.pr-reason').hide(200);
-
-
+			if (c.display === 'true') {
+				$(display.input).prop('checked', true);
+				$(display.pr).removeClass('pr-no-display');
+				$(display.pr).addClass('pr-display');
+				$(display.pr).find('.pr-reason').hide(200);
 			} else {
-				$('#edit-modal input[name="display"]').prop('checked', false);
-
-				$('#edit-modal .pr-input-box:nth-child(1)').addClass('pr-no-display');
-				$('#edit-modal .pr-input-box:nth-child(1)').removeClass('pr-display');
-				$('#edit-modal .pr-input-box:nth-child(1)').find('.pr-reason').show(200);
-
-				var reason = split('reason', display);
+				$(display.input).prop('checked', false);
+				$(display.pr).addClass('pr-no-display');
+				$(display.pr).removeClass('pr-display');
+				$(display.pr).find('.pr-reason').show(200);
+				
+				var reason = split('reason', c.display);
 				$('#edit-modal .pr-reason select').val(reason[1]);
 				$('#edit-modal .pr-reason input').val(reason[2]);
-
 			}
 
 			// SUBMISSION
-			$('#edit-modal input[name="sub"]').val(sub);
-			subDetermine($('#edit-modal input[name="sub"]').parent(), sub);
+			$('#edit-modal input[name="sub"]').val(c.sub);
+			subDetermine($('#edit-modal input[name="sub"]').parent(), c.sub);
 
 			// GENRES
-			var genres = genres.split(',');
+			var genres = c.genres.split(',');
 			$('#edit-modal .genre-input input[type="checkbox"]').prop('checked', false);
 			for (var i = 0; i < genres.length; i++) {
 				$('#edit-modal input[value="'+genres[i]+'"]').prop('checked', true);
@@ -262,12 +291,12 @@ $(document).ready(function() {
 
 			// SOCIAL
 			$('#edit-modal .social-input input').val('');
-			$('#edit-modal input[name="facebook"]').val(fb);
-			$('#edit-modal input[name="soundcloud"]').val(sc);
-			$('#edit-modal input[name="youtube"]').val(yt);
-			$('#edit-modal input[name="instagram"]').val(ig);
-			$('#edit-modal input[name="twitter"]').val(tw);
-			$('#edit-modal input[name="webpage"]').val(wp);
+			$('#edit-modal input[name="facebook"]').val(c.facebook);
+			$('#edit-modal input[name="soundcloud"]').val(c.soundcloud);
+			$('#edit-modal input[name="youtube"]').val(c.youtube);
+			$('#edit-modal input[name="instagram"]').val(c.instagram);
+			$('#edit-modal input[name="twitter"]').val(c.twitter);
+			$('#edit-modal input[name="webpage"]').val(c.webpage);
 			// Check if active
 			$('#edit-modal .social-input input').each(function() {
 				$(this).removeClass('active');
@@ -283,7 +312,7 @@ $(document).ready(function() {
 		if (target === 'remove') {
 			var target =$('#remove-modal');
 			// NAME
-			$('#remove-modal .modal-title').text(name);
+			$('#remove-modal .modal-title').text(c.name);
 		}
 	}
 

@@ -7,12 +7,12 @@
 	$name = $_POST['name'];
 	$sub = $_POST['sub'];
 	$genres = $_POST['genres'];
-	$facebook = $_POST['fb'];
-	$soundcloud = $_POST['sc'];
-	$youtube = $_POST['yt'];
-	$instagram = $_POST['ig'];
-	$twitter = $_POST['tw'];
-	$webpage = $_POST['wp'];
+	$facebook = $_POST['facebook'];
+	$soundcloud = $_POST['soundcloud'];
+	$youtube = $_POST['youtube'];
+	$instagram = $_POST['instagram'];
+	$twitter = $_POST['twitter'];
+	$webpage = $_POST['webpage'];
 	$flags = $_POST['flags'];
 
 	if ($type === 'add') {
