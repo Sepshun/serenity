@@ -1,3 +1,6 @@
+// -------------------------------------
+// SERENITY SCRIPT ---------------------
+// Written by Sepshun & JeremyJaydan ---
 
 // Sections I've edited are marked with -=-=- for ease 
 
@@ -23,9 +26,7 @@ $(document).ready(function() {
 
 	// ------------------------------------
 	// ACCOUNT PANEL | OPENING/CLOSING
-	$('#header-account').click(function() {
-		$(this).toggleClass('open');
-	});
+	$('#header-account').click(function() { $(this).toggleClass('open'); });
 
 	// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 	// CONTEXT MENU
@@ -152,18 +153,15 @@ $(document).ready(function() {
 
 	// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 	// SUBMISSION TYPE DETERMINATION
-
 	const subContainChecks = {
-		"https://soundcloud.com/": ["soundcloud", "sc"],
+		"https://soundcloud.com/": "soundcloud",
 		// soundcloud entry must be first to skip web and the rest.
-		// Also the 2nd item in the array is to add the class since the soundcloud class is .sc
 		"http://": "web",
 		"https://": "web",
 		"@": "email"
 	}
 
 	function subDetermine(target, sub) {
-
 		// Removing all classes first
 		target.removeClass("sub-web sub-email sub-sc");
 
@@ -193,11 +191,8 @@ $(document).ready(function() {
 	// ------------------------------------
 	// SOCIAL LINK CONFIRMATION
 	function socialCheck(target, val, contains) {
-		if (val.contains(contains)) {
-			target.addClass('active');
-		} else {
-			target.removeClass('active');
-		}
+		if (val.contains(contains)) { target.addClass('active'); }
+		else { target.removeClass('active'); }
 	}
 
 	$('.social-input input').keyup(function() {
@@ -291,12 +286,17 @@ $(document).ready(function() {
 
 			// SOCIAL
 			$('#edit-modal .social-input input').val('');
+
+			// There must be a faster and more convieniant way of doing this
+			// I'm thinking some kind of for loop that'll reuse the value
+			// 'facebook', 'soundcloud', etc, since there's obviously a pattern
 			$('#edit-modal input[name="facebook"]').val(c.facebook);
 			$('#edit-modal input[name="soundcloud"]').val(c.soundcloud);
 			$('#edit-modal input[name="youtube"]').val(c.youtube);
 			$('#edit-modal input[name="instagram"]').val(c.instagram);
 			$('#edit-modal input[name="twitter"]').val(c.twitter);
 			$('#edit-modal input[name="webpage"]').val(c.webpage);
+			
 			// Check if active
 			$('#edit-modal .social-input input').each(function() {
 				$(this).removeClass('active');

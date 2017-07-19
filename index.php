@@ -2,12 +2,15 @@
 	session_start();
 	require_once('connect.php');
 
+	// SET USERNAME VAR
 	$username = $_SESSION['username'];
 
+	// GET USERTYPE
 	$fetch_usertype = mysqli_query($conn, "SELECT usertype FROM `userlogin` WHERE username='$username'");
 	$res = mysqli_fetch_assoc($fetch_usertype);
 	$usertype = $res['usertype'];
 
+	// GET AVATAR
 	$avatar_check = file_exists("assets/images/avatars/$username.png");
 	if ($avatar_check) {$avatar = lcfirst($username);}
 	else {$avatar = "default";}
@@ -15,6 +18,7 @@
 	// REDIRECT NOT LOGGED IN VISITORS
 	if(!isset($_SESSION['username'])) {header('location: login.php');}
 
+	// STORE GENRES
 	$genres_array = array('future','dubstep','house','electro','melbourne','dnb','neuro','glitch-hop','trap','hybrid','chill','hardstyle');
 ?>
 <!DOCTYPE html>

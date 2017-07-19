@@ -464,12 +464,12 @@ button:focus {
       .modal .input-cont .pr-input-box.pr-no-display input[type="text"]:not([name="inactive-info"]) {
         -webkit-box-shadow: 0 0 0 1px #FF5D5D inset;
         box-shadow: 0 0 0 1px #FF5D5D inset; }
+      .modal .input-cont .pr-input-box.sub-soundcloud input[type="text"]:not([name="inactive-info"]) {
+        -webkit-box-shadow: 0 0 0 1px #ff3a00 inset;
+        box-shadow: 0 0 0 1px #ff3a00 inset; }
       .modal .input-cont .pr-input-box.sub-web input[type="text"]:not([name="inactive-info"]) {
         -webkit-box-shadow: 0 0 0 1px #00CCFF inset;
         box-shadow: 0 0 0 1px #00CCFF inset; }
-      .modal .input-cont .pr-input-box.sub-sc input[type="text"]:not([name="inactive-info"]) {
-        -webkit-box-shadow: 0 0 0 1px #ff3a00 inset;
-        box-shadow: 0 0 0 1px #ff3a00 inset; }
       .modal .input-cont .pr-input-box.sub-email input[type="text"]:not([name="inactive-info"]) {
         -webkit-box-shadow: 0 0 0 1px #F5FF88 inset;
         box-shadow: 0 0 0 1px #F5FF88 inset; }

@@ -512,11 +512,11 @@ button:focus {outline: none;}
 					}
 				}
 			}
-			&.pr-display    input[type="text"]:not([name="inactive-info"]) {box-shadow: 0 0 0 1px $pr-active inset;}
-			&.pr-no-display input[type="text"]:not([name="inactive-info"]) {box-shadow: 0 0 0 1px $pr-inactive inset;}
-			&.sub-web       input[type="text"]:not([name="inactive-info"]) {box-shadow: 0 0 0 1px $sub-web inset;}
-			&.sub-sc        input[type="text"]:not([name="inactive-info"]) {box-shadow: 0 0 0 1px $sub-sc inset;}
-			&.sub-email     input[type="text"]:not([name="inactive-info"]) {box-shadow: 0 0 0 1px $sub-email inset;}
+			&.pr-display     input[type="text"]:not([name="inactive-info"]) {box-shadow: 0 0 0 1px $pr-active inset;}
+			&.pr-no-display  input[type="text"]:not([name="inactive-info"]) {box-shadow: 0 0 0 1px $pr-inactive inset;}
+			&.sub-soundcloud input[type="text"]:not([name="inactive-info"]) {box-shadow: 0 0 0 1px $sub-sc inset;}
+			&.sub-web        input[type="text"]:not([name="inactive-info"]) {box-shadow: 0 0 0 1px $sub-web inset;}
+			&.sub-email      input[type="text"]:not([name="inactive-info"]) {box-shadow: 0 0 0 1px $sub-email inset;}
 			.pr-reason {
 				display: block;
 				margin-bottom: 10px;

@@ -2,7 +2,7 @@ Database Columns ------------------------
  - ID will be used to display an entries ID, this is good for finding or editing an entry
  - Display is used to display whether an entry is still actively promoting music
  - Name is obviously the name of the entry (i.e. PhaseBeats)
- - Sub is to show the submission of an entry. PHP will take care of submission type so links, email addresses, or "sc" all work well
+ - Sub is to show the submission of an entry. PHP will take care of submission type so links, email addresses, or soundcloud all work well
  - Genres will be edited in the normal edit menu for a promoter, you'll be presented with multiple checkboxes
  - Facebook
  - Soundcloud
@@ -10,31 +10,31 @@ Database Columns ------------------------
  - Instagram
  - Twitter
  - Webpage
- - Flags will allow the tool to analyze each entry and flag something wrong with it, more below
+ - Meta-data
 
 
-Flagging system ------------------------
-The flagging system will use JavaScript to check all promoters, one after another, and then report if anything looks out of place, such as a facebook link in the soundcloud field, the promoter not uploading in the past 2-3 months, etc etc
-Once the system has checked a promoter and finds a reason for flagging, it will then format a log such as:
+FLAGGING SYSTEM ------------------------
+The flag system is going to be used for easily accessing user submitted entries and approving or declining them.
+This could possibly be done just by inserting a JS Object into the database, but that'll require some further testing.
+The flag data will be stored in a separate database table, as to keep the main database table fast and responsive.
 
-user|This entry was submitted by a user, it must be checked over by a moderator or admin before becoming visible on the promo list.
-social|A social link in this entry has been suspected of being in the wrong place
-
-This is split by two values, a type and a string. The type is "user" or "social", etc. This defines how you can filter flags. So to check all user submitted entries you would click "Flags" in the toolbar and select "User" under the types
-This log will be added to the database under the "flag" column
-If multiple flags are present, an and symbol (&) will be used to seperate them
-Standard users will NOT have access to the flagging system
+All of this will be accessed in a separate page, rather than a modal as previously planned.
 
 FLAG TYPES:
-social   - This means that an entry has a problem with it's social links
-activity - This flag types states that the channel may no longer be active
 pending  - This means a user has submitted this entry and it is awaiting approval
 delete   - This means an entry has been marked for removal, this must be viewed by an admin for approval
 edit     - This means a user has requested an edit to an entry. They will be able to provide their reason in a text-input
 
 
+META-DATA ------------------------
+Meta-data will allow the keeping of basic data, such as whom added the entry, when it was entered, when it was last edited, when it was last scanned, etc etc.
+This could (hopefully) be stored as a JSON object just as well.
 
-User Account Types ------------------------
+NOTE: Testing with JSON data in an SQL column went well, will test a bit further before implementation.
+
+
+
+USER ACCOUNT TYPES ------------------------
 Administrator --
 Administrators have the permission to do anything they please, only one will exist that will be myself.
 This includes adding active entries immediately without approval, creating backups of the database, approving user submitted entries, editing entries, deleting entries, scan the entire database, as well as much more.
