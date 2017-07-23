@@ -279,6 +279,14 @@ button:focus {outline: none;}
 				color: $col-2;
 				&:before {left: 100%; opacity: 0;}
 			}
+			a {
+				color: black;
+				text-decoration: none;
+				transition: all 0.3s ease-in-out;
+				&:hover {
+					color: $col-2;
+				}
+			}
 		}
 	}
 
@@ -652,69 +660,6 @@ button:focus {outline: none;}
 	}
 
 	// -------------------------------------------
-	// Scan radios
-	.scan-radios {
-		label {
-			color: white;
-			width: 50%;
-			display: block;
-			padding: 10px 0;
-			text-align: center;
-			float: left;
-			cursor: pointer;
-			position: relative;
-			input {display: none;}
-			span {
-				position: absolute;
-				width: 100%;
-				height: 100%;
-				top: 0;
-				left: 0;
-				transition: all 0.15s ease-in-out;
-			}
-			input:checked + span {background: rgba(255,255,255,0.05);}
-		}
-	}
-	.scan-display {
-		min-height: 500px;
-		.row {
-			display: flex;
-			float: left;
-			width: 100%;
-			position: relative;
-			.cell {
-				color: white;
-				padding: 10px;
-				width: 100%;
-			}
-			.flags-btn {
-				color: $error;
-				width: 32px;
-				padding: 10px 6.5px;
-				text-align: center;
-				cursor: pointer;
-			}
-			.cell-dropdown {
-				position: absolute;
-				top: 42px;
-				background: hsl(0,0%,8%);
-				width: calc(100% - 20px);
-				color: white;
-				overflow: hidden;
-				max-height: 0px;
-				padding: 0 10px;
-				transition: all 0.15s ease-in-out;
-				z-index: 2;
-				transform: translateZ(0);
-				&.open {
-					max-height: 500px;
-					padding: 10px;
-				}
-			}
-		}
-	}
-
-	// -------------------------------------------
 	// Submit button
 	.submit-btn {
 		clear: both;
@@ -746,6 +691,31 @@ button:focus {outline: none;}
 			&:hover {
 				
 			}
+		}
+	}
+
+	&#properties-modal {
+		width: 400px;
+		table {
+			color: white;
+			width: 100%;
+			margin: 20px 0 0 0;
+			border-collapse: collapse;
+			thead tr {
+				background: hsl(0,0%,10%);
+				text-align: left;
+			}
+			tr td { width: 50%; }
+			tr td:first-child {
+				background: hsla(0,0%,100%,0.01);
+			}
+			tr td:last-child {
+				color: hsl(0,0%,50%);
+			}
+			tbody tr:hover {
+				background: hsla(0,0%,100%,0.05);
+			}
+			td, th { padding: 10px; }
 		}
 	}
 }
@@ -794,6 +764,13 @@ button:focus {outline: none;}
 	table {
 		width: 100%;
 		border-collapse: collapse;
+		@include shadow(1);
+		thead {
+			tr th {
+				padding: 10px;
+				text-align: left;
+			}
+		}
 		tbody {
 			// Table Row
 			tr {
@@ -882,7 +859,7 @@ button:focus {outline: none;}
 					&:nth-child(4), &:nth-child(5) {width: 150px;}
 				}
 				&:nth-child(even) {background-color: hsl(0,0%,90%);}
-				&:hover {box-shadow: 0 0 0 1px hsl(0,0%,80%) inset;}
+				&:hover {background: hsl(0,0%,85%);}
 				&.selected td {
 					border-bottom: $col-2 2px solid;
 					border-top: $col-1 2px solid;
