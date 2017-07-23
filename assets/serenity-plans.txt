@@ -17,7 +17,6 @@ FLAGGING SYSTEM ------------------------
 The flag system is going to be used for easily accessing user submitted entries and approving or declining them.
 This could possibly be done just by inserting a JS Object into the database, but that'll require some further testing.
 The flag data will be stored in a separate database table, as to keep the main database table fast and responsive.
-
 All of this will be accessed in a separate page, rather than a modal as previously planned.
 
 FLAG TYPES:
@@ -29,8 +28,13 @@ edit     - This means a user has requested an edit to an entry. They will be abl
 META-DATA ------------------------
 Meta-data will allow the keeping of basic data, such as whom added the entry, when it was entered, when it was last edited, when it was last scanned, etc etc.
 This could (hopefully) be stored as a JSON object just as well.
+NOTE: Testing with JSON data in an SQL column went well, will test a bit further before implementation
 
-NOTE: Testing with JSON data in an SQL column went well, will test a bit further before implementation.
+META-DATA TYPES:
+created_by    - This stores whom created the entry
+created_date  - This stores when the entry was created
+modified_by   - This stores everyone who has modified the entry
+modified_date - This stores when the entry was last modified
 
 
 

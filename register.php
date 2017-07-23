@@ -88,7 +88,7 @@
 				<p class="title">Please Register</p>
 				<form method="POST" autocomplete="off">
 					<div class="input-box">
-						<input type="text" name="username" placeholder="Username">
+						<input type="text" name="username" placeholder="Username" autofocus>
 					</div>
 					<div class="input-box">
 						<input type="text" name="email" placeholder="Email Address">

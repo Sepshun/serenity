@@ -232,6 +232,14 @@ button:focus {
         #header #header-buttons div:hover:before {
           left: 100%;
           opacity: 0; }
+      #header #header-buttons div a {
+        color: black;
+        text-decoration: none;
+        -webkit-transition: all 0.3s ease-in-out;
+        -o-transition: all 0.3s ease-in-out;
+        transition: all 0.3s ease-in-out; }
+        #header #header-buttons div a:hover {
+          color: #25BB8F; }
   #header #header-account {
     width: 300px;
     height: 64px;
@@ -600,66 +608,6 @@ button:focus {
     color: white;
     width: calc(100% - 20px);
     margin-bottom: 20px; }
-  .modal .scan-radios label {
-    color: white;
-    width: 50%;
-    display: block;
-    padding: 10px 0;
-    text-align: center;
-    float: left;
-    cursor: pointer;
-    position: relative; }
-    .modal .scan-radios label input {
-      display: none; }
-    .modal .scan-radios label span {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      top: 0;
-      left: 0;
-      -webkit-transition: all 0.15s ease-in-out;
-      -o-transition: all 0.15s ease-in-out;
-      transition: all 0.15s ease-in-out; }
-    .modal .scan-radios label input:checked + span {
-      background: rgba(255, 255, 255, 0.05); }
-  .modal .scan-display {
-    min-height: 500px; }
-    .modal .scan-display .row {
-      display: -webkit-box;
-      display: -webkit-flex;
-      display: -ms-flexbox;
-      display: flex;
-      float: left;
-      width: 100%;
-      position: relative; }
-      .modal .scan-display .row .cell {
-        color: white;
-        padding: 10px;
-        width: 100%; }
-      .modal .scan-display .row .flags-btn {
-        color: #FF5D5D;
-        width: 32px;
-        padding: 10px 6.5px;
-        text-align: center;
-        cursor: pointer; }
-      .modal .scan-display .row .cell-dropdown {
-        position: absolute;
-        top: 42px;
-        background: #141414;
-        width: calc(100% - 20px);
-        color: white;
-        overflow: hidden;
-        max-height: 0px;
-        padding: 0 10px;
-        -webkit-transition: all 0.15s ease-in-out;
-        -o-transition: all 0.15s ease-in-out;
-        transition: all 0.15s ease-in-out;
-        z-index: 2;
-        -webkit-transform: translateZ(0);
-        transform: translateZ(0); }
-        .modal .scan-display .row .cell-dropdown.open {
-          max-height: 500px;
-          padding: 10px; }
   .modal .submit-btn {
     clear: both;
     position: relative;
@@ -694,6 +642,26 @@ button:focus {
       color: white;
       cursor: pointer;
       overflow: hidden; }
+  .modal#properties-modal {
+    width: 400px; }
+    .modal#properties-modal table {
+      color: white;
+      width: 100%;
+      margin: 20px 0 0 0;
+      border-collapse: collapse; }
+      .modal#properties-modal table thead tr {
+        background: #1a1a1a;
+        text-align: left; }
+      .modal#properties-modal table tr td {
+        width: 50%; }
+      .modal#properties-modal table tr td:first-child {
+        background: rgba(255, 255, 255, 0.01); }
+      .modal#properties-modal table tr td:last-child {
+        color: gray; }
+      .modal#properties-modal table tbody tr:hover {
+        background: rgba(255, 255, 255, 0.05); }
+      .modal#properties-modal table td, .modal#properties-modal table th {
+        padding: 10px; }
 
 #context-menu {
   position: absolute;
@@ -733,7 +701,12 @@ button:focus {
   width: 90%; }
   #container table {
     width: 100%;
-    border-collapse: collapse; }
+    border-collapse: collapse;
+    -webkit-box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.14), 0 2px 2px 0 rgba(0, 0, 0, 0.12), 0 1px 3px 0 rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.14), 0 2px 2px 0 rgba(0, 0, 0, 0.12), 0 1px 3px 0 rgba(0, 0, 0, 0.2); }
+    #container table thead tr th {
+      padding: 10px;
+      text-align: left; }
     #container table tbody tr td {
       padding: 10px;
       position: relative;
@@ -915,8 +888,7 @@ button:focus {
     #container table tbody tr:nth-child(even) {
       background-color: #e6e6e6; }
     #container table tbody tr:hover {
-      -webkit-box-shadow: 0 0 0 1px #cccccc inset;
-      box-shadow: 0 0 0 1px #cccccc inset; }
+      background: #d9d9d9; }
     #container table tbody tr.selected td {
       border-bottom: #25BB8F 2px solid;
       border-top: #005189 2px solid;

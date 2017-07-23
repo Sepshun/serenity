@@ -6,13 +6,30 @@
 
 $(document).ready(function() {
 	// CONTAINS FUNCTION EXTENSION
-	String.prototype.contains = function(it) { return this.indexOf(it) != -1; };
+	String.prototype.contains = function(val) { return this.indexOf(val) != -1; };
+	
 
 	// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 	// New log func | ability to disable logs
-	const log = function(){
-		if(!log.disableLogs) return console.log.apply(null, arguments);
-	};
+	const log = function(){ if(!log.disableLogs) return console.log.apply(null, arguments); };
+	log.disableLogs = false;
+
+
+	// ------------------------------------
+	// getCookie function
+	function getCookie(cname) {
+	    var name = cname + "=";
+	    var decodedCookie = decodeURIComponent(document.cookie);
+	    var ca = decodedCookie.split(';');
+	    for(var i = 0; i <ca.length; i++) {
+	        var c = ca[i];
+	        while (c.charAt(0) == ' ') { c = c.substring(1); }
+	        if (c.indexOf(name) == 0) { return c.substring(name.length, c.length); }
+	    }
+	    return "";
+	}
+	var username = getCookie('user');
+
 
 	// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 	// getInputs functionality
@@ -21,8 +38,7 @@ $(document).ready(function() {
 		inputNames.forEach(function(input){inputs[input] = $("#" + queryType + "-modal input[name='" + input + "']").val()});
 		return inputs;
 	};
-
-	log.disableLogs = false;
+	
 
 	// ------------------------------------
 	// ACCOUNT PANEL | OPENING/CLOSING
@@ -36,7 +52,7 @@ $(document).ready(function() {
 	$('#container table tbody tr').bind('contextmenu', function(event) {
 
 		// Define attributes to look for
-		let attributes = ["id", "display", "name", "sub", "genres", "facebook", "soundcloud", "youtube", "instagram", "twitter", "webpage", "flags"];
+		let attributes = ["id", "display", "name", "sub", "genres", "facebook", "soundcloud", "youtube", "instagram", "twitter", "webpage", "meta"];
 
 		c         = $(event.target);
 		c.parent  = c.parent();
@@ -206,25 +222,58 @@ $(document).ready(function() {
 	// SUBMIT BUTTON
 
 	$('.submit-btn:not(.scan-btn)').click(function() {
-		var queryType = $(this).attr('query-type'), display, name, genres, inputs, flags;
+		var queryType = $(this).attr('query-type'), display, name, genres, inputs, meta;
 
 		name = $('#'+queryType+'-modal input[name="pr-name"]').val();
 		inputs = getInputs(["sub", "facebook", "soundcloud", "youtube", "instagram", "twitter", "webpage"], queryType);
 		genres = "";
 
 		// STORE ALL THE INFO
+
+		// Name
 		if (!$('#'+queryType+'-modal input[name="display"]:checked').length > 0) {display = 'false|' + $('#'+queryType+'-modal select').val() + "|" + $('#'+queryType+'-modal input[name="inactive-info"]').val();}
 		else {display = 'true';}
+
+		// Genres
 		$('#'+queryType+'-modal input[name="genre"]:checked').each(function(){ genres += $(this).val() + "," });
 		genres = genres.replace(/,\s*$/, "");
-		flags = "";
+
+		// Meta-data
+		let d = new Date(),
+			date = (d.getMonth() + 1)+"/"+d.getDate()+"/"+d.getFullYear();
+
+		// If we're editing the data
+		if (queryType === 'edit') {
+			metaData = JSON.parse(c.meta);
+
+			// Modified By
+			let moddedBy = metaData.modified_by;
+			// If this user is NOT already included
+			if (!moddedBy.contains(username)) {
+				// Length check, to avoid "N/A, Sepshun"
+				if (moddedBy.length > 3) { metaData.modified_by += ', ' + username; }
+				else { metaData.modified_by = username; }
+			}
+
+			// Modified Date
+			metaData.date_modified = date;
+
+			// Stringify the data to ready it for SQL
+			meta = JSON.stringify(metaData);
+		}
+		// Else we're adding the data
+		else { meta = '{"created_by": "'+username+'", "date_created": "'+date+'", "modified_by": "N/A", "date_modified": "N/A"}'; }
+
 
 		// Everything inside the postObj
 		// note: if the key is the same as the variable name, you can just pass 1 argument into an object
-		let postObj = Object.assign({ type:queryType, id:c.id, display, name, genres, flags }, inputs);
+		let postObj = Object.assign({ type:queryType, id:c.id, display, name, genres, meta }, inputs);
 
 		if (queryType === 'remove' && $('#remove-modal input[name="remove"]').val() === 'REMOVE' || queryType !== 'remove') {
-			$.post('query.php', postObj, function(){location.reload()});
+			$.post('query.php', postObj, function(res){
+				//location.reload();
+				//log(res);
+			});
 		}
 	});
 
@@ -238,9 +287,6 @@ $(document).ready(function() {
 	function updateModal(target, c) {
 		if (target === 'edit') {
 			let modal = $('#'+target+'-modal'),
-			
-			// If you're referencing the same string a lot,
-			// it's always good to keep it at the top/in one spot
 
 			name = {
 				title: "#edit-modal .modal-title",
@@ -310,24 +356,27 @@ $(document).ready(function() {
 			$('#edit-modal input[name=""]').val();
 		}
 		if (target === 'remove') {
-			var target =$('#remove-modal');
+			var target = $('#remove-modal');
 			// NAME
 			$('#remove-modal .modal-title').text(c.name);
 		}
-	}
+		if (target === 'properties') {
+			target = $('#'+target+'-modal');
 
-	// ------------------------------------
-	// FLAGS
-	$('.flags-btn').click(function() {
-		// Treat this like the table dropdowns
-		var target = $(this).parent().find('.cell-dropdown');
-		if (target.hasClass('open')) {
-			target.removeClass('open');
-		} else {
-			$('.cell-dropdown').removeClass('open');
-			target.toggleClass('open');
+			// NAME
+			$('#properties-modal .modal-title').text(c.name);
+
+			// Properties
+			let prop = {
+				date_created: "#properties-modal #date_created",
+				created_by: "#properties-modal #created_by",
+				date_modified: "#properties-modal #date_modified",
+				modified_by: "#properties-modal #modified_by"
+			}
+			let metaData = JSON.parse(c.meta);
+			for (let data in prop) { $(prop[data]).text(metaData[data]); }
 		}
-	});
+	}
 	
 
 	// ------------------------------------

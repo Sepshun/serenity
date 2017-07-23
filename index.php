@@ -58,9 +58,11 @@
 					if ($usertype === 'admin' || $usertype === 'mod') {
 						echo '<div class="modal-btn" target="blacklist">Blacklist</div>';
 						echo '<div class="modal-btn" target="flags">Flags</div>';
-						echo '<div class="modal-btn" target="scan">Scan</div>';
+						echo '<div><a href="scan.php">Scan</a></div>';
+						echo '<div class="header-btn-divider"></div>';
+						echo '<div><a href="logs.php">Logs</a></div>';
 					} else if ($usertype === 'user') {
-						
+
 					}
 				?>
 			</div>
@@ -296,87 +298,45 @@
 		</div>
 
 		<!-- =============================== -->
-		<!-- FLAGS MODAL                     -->
-		<div id="flags-modal" class="modal">
+		<!-- BLACKLIST MODAL                 -->
+		<div id="properties-modal" class="modal">
 			<!-- =============================== -->
 			<!-- Title                           -->
-			<p class="modal-title">Flags</p>
-
-			<!-- =============================== -->
-			<!-- Close Button                    -->
-			<div class="close-btn"><i class="material-icons">close</i></div>
-		</div>
-
-		<!-- =============================== -->
-		<!-- SCAN MODAL                      -->
-		<div id="scan-modal" class="modal">
-			<!-- =============================== -->
-			<!-- Title                           -->
-			<p class="modal-title">Scan</p>
+			<p class="modal-title">Untitled</p>
+			<p class="modal-name">Properties</p>
 
 			<!-- =============================== -->
 			<!-- Close Button                    -->
 			<div class="close-btn"><i class="material-icons">close</i></div>
 
-
-
 			<!-- =============================== -->
-			<!-- INPUT CONTAINER                 -->
-			<div class="input-cont">
-				<!-- =============================== -->
-				<!-- TYPE SELECTION                  -->
-				<form class="scan-radios">
-					<label>Full Scan
-						<input type="radio" name="scan-type" value="full" checked>
-						<span></span>
-					</label>
-					<label>Single Scan
-						<input type="radio" name="scan-type" value="single">
-						<span></span>
-					</label>
-				</form>
-
-				<!-- =============================== -->
-				<!-- DISPLAY CONTAINER               -->
-				<div class="scan-display">
-					<div class="scan-target">
-						
-					</div>
-					<div class="row">
-						<div class="cell">Inverse Network</div>
-						<div class="cell flags-btn">5</div>
-
-						<div class="cell-dropdown flags">
-							<div>Inactive - 142 days</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="cell">Inverse Network</div>
-						<div class="cell flags-btn">5</div>
-
-						<div class="cell-dropdown flags">
-							<div>Inactive - 142 days</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="cell">Inverse Network</div>
-						<div class="cell flags-btn">5</div>
-
-						<div class="cell-dropdown flags">
-							<div>Inactive - 142 days</div>
-						</div>
-					</div>
-				</div>
-
-
-				<!-- =============================== -->
-				<!-- SCAN BUTTON                     -->
-				<div class="submit-btn scan-btn" query-type="scan"><button>SCAN</button></div>
-
-				<!-- =============================== -->
-				<!-- SUBMIT BUTTON                   -->
-				<div class="submit-btn" query-type="flags" style="display: none;"><button>SUBMIT</button></div>
-			</div>
+			<!-- Meta-Data Table                 -->
+			<table>
+				<thead>
+					<tr>
+						<th>Property</th>
+						<th>Value</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>Date Created</td>
+						<td id="date_created">N/A</td>
+					</tr>
+					<tr>
+						<td>Created By</td>
+						<td id="created_by">N/A</td>
+					</tr>
+					<tr>
+						<td>Date Modified</td>
+						<td id="date_modified">N/A</td>
+					</tr>
+					<tr>
+						<td>Modified By</td>
+						<td id="modified_by">N/A</td>
+					</tr>
+				</tbody>
+			</table>
 		</div>
 
 
@@ -387,10 +347,10 @@
 			<ul>
 				<li class="modal-btn" target="edit">Edit Entry</li>
 				<li class="modal-btn" target="remove">Remove Entry</li>
-				<li class="divider"></li>
 				<li class="modal-btn" target="blacklist">Add to Blacklist</li>
-				<li class="modal-btn" target="flags">View Flags</li>
 				<li class="modal-btn" target="scan">Scan Entry</li>
+				<li class="modal-btn" target="properties">Properties</li>
+				<!--<li class="divider"></li>-->
 			</ul>
 		</div>
 
@@ -412,7 +372,7 @@
 				<tbody>
 					<?php
 						// GET DATA FROM SERVER DB
-						$select = "SELECT id, display, name, sub, genres, facebook, soundcloud, youtube, instagram, twitter, webpage, flags FROM `promoters` ORDER BY id ASC";
+						$select = "SELECT id, display, name, sub, genres, facebook, soundcloud, youtube, instagram, twitter, webpage, meta FROM `promoters` ORDER BY id ASC";
 						$res = mysqli_query($conn, $select);
 
 						// IF ROWS ARE MORE THAN ONE
@@ -455,7 +415,7 @@
 									instagram='".$row['instagram']."'
 									twitter='".$row['twitter']."'
 									webpage='".$row['webpage']."'
-									flags='".$row['flags']."'
+									meta='".$row['meta']."'
 								>
 									<td>".$row['id']."</td>
 									<td>".$row['name']."</td>

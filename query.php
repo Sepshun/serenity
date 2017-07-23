@@ -13,17 +13,18 @@
 	$instagram = $_POST['instagram'];
 	$twitter = $_POST['twitter'];
 	$webpage = $_POST['webpage'];
-	$flags = $_POST['flags'];
+	$meta = $_POST['meta'];
 
 	if ($type === 'add') {
-		$query = "INSERT INTO promoters (display,name,sub,genres,facebook,soundcloud,youtube,instagram,twitter,webpage,flags) VALUES ('$display','$name','$sub','$genres','$facebook','$soundcloud','$youtube','$instagram','$twitter','$webpage','$flags')";
+		$query = "INSERT INTO promoters (display,name,sub,genres,facebook,soundcloud,youtube,instagram,twitter,webpage,meta) VALUES ('$display','$name','$sub','$genres','$facebook','$soundcloud','$youtube','$instagram','$twitter','$webpage','$meta')";
 	}
 	if ($type === 'edit') {
-		$query = "UPDATE promoters SET display='$display',name='$name',sub='$sub',genres='$genres',facebook='$facebook',soundcloud='$soundcloud',youtube='$youtube',instagram='$instagram',twitter='$twitter',webpage='$webpage',flags='$flags' WHERE id='$id'";
+		$query = "UPDATE promoters SET display='$display',name='$name',sub='$sub',genres='$genres',facebook='$facebook',soundcloud='$soundcloud',youtube='$youtube',instagram='$instagram',twitter='$twitter',webpage='$webpage',meta='$meta' WHERE id='$id'";
 	}
 	if ($type === 'remove') {
 		$query = "DELETE FROM promoters WHERE id='$id'";
 	}
 	//echo $query;
 	$res = mysqli_query($conn, $query);
+	echo $query;
 ?>
